@@ -1,11 +1,11 @@
-// Package combinations provides a method to generate all combinations out of a given string array.
+// Package combinations provides a method to generate all combinations out of a given interface array.
 package combinations
 
 import "math/bits"
 
-// All returns all combinations for a given string array.
+// All returns all combinations for a given interface array.
 // This is essentially a powerset of the given set except that the empty set is disregarded.
-func All(set []interface{}) (subsets [][]interface{}) {
+func All(set []interface{}, f func(subset []interface{})) {
 	length := uint(len(set))
 
 	// Go through all possible combinations of objects
@@ -21,15 +21,15 @@ func All(set []interface{}) (subsets [][]interface{}) {
 				subset = append(subset, set[object])
 			}
 		}
-		// add subset to subsets
-		subsets = append(subsets, subset)
+
+		// run function on subset
+		f(subset)
 	}
-	return subsets
 }
 
-// Combinations returns combinations of n elements for a given string array.
+// Combinations returns combinations of n elements for a given interface array.
 // For n < 1, it equals to All and returns all combinations.
-func Combinations(set []interface{}, n int) (subsets [][]interface{}) {
+func Combinations(set []interface{}, n int, f func(subset []interface{})) {
 	length := uint(len(set))
 
 	if n > len(set) {
@@ -53,8 +53,8 @@ func Combinations(set []interface{}, n int) (subsets [][]interface{}) {
 				subset = append(subset, set[object])
 			}
 		}
-		// add subset to subsets
-		subsets = append(subsets, subset)
+
+		// run function on subset
+		f(subset)
 	}
-	return subsets
 }
