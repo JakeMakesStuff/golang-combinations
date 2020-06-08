@@ -5,7 +5,7 @@ import "math/bits"
 
 // All returns all combinations for a given interface array.
 // This is essentially a powerset of the given set except that the empty set is disregarded.
-func All(set []interface{}, f func(subset []interface{})) {
+func All(set []interface{}, f func(subset []interface{}) bool) {
 	length := uint(len(set))
 
 	// Go through all possible combinations of objects
@@ -23,13 +23,15 @@ func All(set []interface{}, f func(subset []interface{})) {
 		}
 
 		// run function on subset
-		f(subset)
+		if f(subset) {
+			return
+		}
 	}
 }
 
 // Combinations returns combinations of n elements for a given interface array.
 // For n < 1, it equals to All and returns all combinations.
-func Combinations(set []interface{}, n int, f func(subset []interface{})) {
+func Combinations(set []interface{}, n int, f func(subset []interface{}) bool) {
 	length := uint(len(set))
 
 	if n > len(set) {
@@ -55,6 +57,8 @@ func Combinations(set []interface{}, n int, f func(subset []interface{})) {
 		}
 
 		// run function on subset
-		f(subset)
+		if f(subset) {
+			return
+		}
 	}
 }
